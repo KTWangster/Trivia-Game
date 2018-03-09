@@ -1,4 +1,3 @@
-// This code will run as soon as the page loads
 $(document).ready(function() {
     var questionsArr = [{
             question: "Almost 200 years ago, the world's first computer programmer was born. Who was she?",
@@ -52,7 +51,7 @@ $(document).ready(function() {
         // Decrement function
         decrement: function() {
             timerObj.time--;
-            $("#gameDisplay").append($("<h2>").addClass("countdown").text(timerObj.time + " seconds left!"));
+            $("#gameDisplay").append($("<h2>").addClass("countdown").text(+timerObj.time + " seconds left!"));
             if (timerObj.time === 0) {
                 incorrectAns++;
                 countdownActive = false;
@@ -69,10 +68,6 @@ $(document).ready(function() {
 
             };
         },
-        // Timer stops when time reaches 0.
-        //    timeOut: function() {
-
-        //   },
     };
 
     $("#start").on("click", function() {
@@ -106,16 +101,20 @@ $(document).ready(function() {
 
     // Increases quantity of displayed questions.
 
-    function answerChoice() {
-        userGuess = $(this).attr("value");
-        displayAnswer();
-    };
+    // function answerChoice() {
+
+    //    displayAnswer();
+    // };
 
     function displayAnswer() {
-        // Sets up game display for answer.
+        $("gameDisplay").on("click", ".choices", function() {
+                userGuess = $(this).attr("value");
+                console.log(userGuess)
+            })
+            // Sets up game display for answer.
         $("#gameDisplay").empty();
         // If user chooses correct answer.
-        if (answerChoice == questionsArr.answer) {
+        if (userGuess == questionsArr.answer) {
             randomImage = Math.floor(Math.random() * questionArr.gif);
             $("gameDisplay").html(randomImage);
             correctAnswer += 1;
