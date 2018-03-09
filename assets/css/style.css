@@ -5,3 +5,12 @@
 #question-holder {
     border: 1px solid #000000;
 }
+
+#title {
+    text-align: center;
+}
+
+#gameDisplay {
+    text-align: center;
+    margin: auto;
+}
