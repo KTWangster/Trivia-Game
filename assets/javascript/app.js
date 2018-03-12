@@ -37,12 +37,13 @@ $(document).ready(function() {
     ]
 
     var correctAnswer = 0;
-    var incorrectAns = 0;
+    var incorrectAnswer = 0;
     // Goes through questions array in order from 0.
     var questionsAsked = 0;
     var userGuess;
     // Countdown set to inactive.
     var countdownActive = false;
+    var currentQuestion = questionsArr[questionsAsked]
 
     var interval;
     // Countdown object.
@@ -53,7 +54,7 @@ $(document).ready(function() {
             timerObj.time--;
             $("#gameDisplay").append($("<h2>").addClass("countdown").text(+timerObj.time + " seconds left!"));
             if (timerObj.time === 0) {
-                incorrectAns++;
+                incorrectAnswer++;
                 countdownActive = false;
                 clearInterval(interval);
                 $("#gameDisplay").empty().addClass("image-holder").append('<img id="timeOutImg" src="assets/images/timeout.gif" />')
@@ -82,7 +83,6 @@ $(document).ready(function() {
         console.log(timerObj);
         // Displays timer in a new "countdown" class.
         //$("#countdown").append($("<h3>").addClass("countdown").html(timerObj + "seconds left!"));
-        currentQuestion = questionsArr[questionsAsked]
 
         // Place question in new "question" class.
         $("#gameDisplay").append($("<h2>").addClass("question").html(currentQuestion.question));
@@ -92,57 +92,74 @@ $(document).ready(function() {
             $("#gameDisplay").append($("<h3>").addClass("choices").attr("value", i).html(currentQuestion.choices[i]));
         }
         // Question is displayed in question-holder div.
-        console.log(currentQuestion);
+        console.log(currentQuestion)
         console.log("Here are the choices!");
         questionsAsked += 1;
         console.log(questionsAsked)
     };
 
-
-    // Increases quantity of displayed questions.
-
-    // function answerChoice() {
-
-    //    displayAnswer();
-    // };
+    // Click function for when user selects choice.
+    $("#gameDisplay").on("click", ".choices", function() {
+        userGuess = $(this).attr("value");
+        // Adds to number of questions asked
+        questionsAsked++;
+        //console.log(userGuess)
+        displayAnswer();
+    });
 
     function displayAnswer() {
-        $("gameDisplay").on("click", ".choices", function() {
-                userGuess = $(this).attr("value");
-                console.log(userGuess)
-            })
-            // Sets up game display for answer.
+        // Sets up game display for answer.
         $("#gameDisplay").empty();
-        // If user chooses correct answer.
-        if (userGuess == questionsArr.answer) {
-            randomImage = Math.floor(Math.random() * questionArr.gif);
-            $("gameDisplay").html(randomImage);
+        questionsAsked += 1;
+        countdownActive = false;
+        clearInterval(interval);
+        console.log(userGuess)
+            // If user chooses correct answer.
+        if (userGuess == questionsArr.answerVal) {
+            console.log("Waheeeeeeeey")
+            $("#gameDisplay").empty().addClass("image-holder").append(currentQuestion.gif)
+                .append("That's correct!");
             correctAnswer += 1;
-
+            nextQuestion();
         } else {
-            $("#gameDisplay").html("<img src=assets/images/wrong_answer.gif");
-            $("#gameDisplay").html("The correct answer was " + questionsArr.choices[questionArr.answer] + ".");
+            $("#gameDisplay").empty().addClass("image-holder").append('<img id="timeOutImg" src="assets/images/wrong_answer.gif" />')
+                .append("The correct answer was " + currentQuestion.answer + ".");
             incorrectAnswer += 1;
-        }
-
-        // Displays results.
-        function displayResults() {
-            $("#gameDisplay").empty()
-                .append($("<button>").attr("id", "restart").html("Play Again"))
-                .append($("<h2>").html("Here are your results: "))
-                .append($("<h3>").html("Correct: " + correctAnswer))
-                .append($("<h3>").html("Incorrect: " + incorrectAnswer))
-
-        }
-
-
-        function restartGame() {
-            $("#gameDisplay").empty()
-            correctAnswer = 0;
-            incorrectAns = 0;
-            questionsAsked = 0;
-            displayQuestion();
-        }
-
+            nextQuestion();
+        };
     };
+
+    function nextQuestion() {
+        if (!questionsAsked == questionsArr.length) {
+            displayQuestion();
+        } else {
+            displayResults();
+        };
+    };
+
+    // Displays results.
+    function displayResults() {
+        $("#gameDisplay").empty()
+        $("#gameDisplay").empty().addClass("image-holder").append('<img id="timeOutImg" src="assets/images/woman_scientist.gif" />')
+            .append($("<button>").attr("id", "restart").html("Play Again"))
+            .append($("<h2>").html("Here are your results: "))
+            .append($("<h3>").html("Correct: " + correctAnswer))
+            .append($("<h3>").html("Incorrect: " + incorrectAnswer))
+    }
+
+    // Restarts game.
+    function restartGame() {
+        $("#gameDisplay").empty()
+
+        correctAnswer = 0;
+        incorrectAnswer = 0;
+        questionsAsked = 0;
+        displayQuestion();
+    }
+
 });
+
+// When user answers correctly, the corresponding display isn't showing up correctly
+// Implement a function for 'Next Question'
+// displayAnswer function not working properly - Countdown doesn't stop
+// User guess keeps registering as incorrect
