@@ -1,6 +1,8 @@
 body {
     font-family: 'Source Sans Pro', sans-serif;
     padding: 5px;
+    background-color: #000000;
+    color: #ffffff;
 }
 
 
@@ -9,6 +11,16 @@ body {
 #title {
     text-align: center;
     font-size: 50px;
+    padding: 50px;
+}
+
+h2 {
+    padding-top: 25px;
+}
+
+h3 {
+    padding-top: 25px;
+    font-size: 30px;
 }
 
 
@@ -24,20 +36,24 @@ body {
     margin: 10px auto;
 }
 
+.choices {
+    padding: 25px;
+}
+
 
 /* Button */
 
 #start {
     text-align: center;
     padding: 10px;
-    color: #ffffff;
-    background-color: #f8cb46;
+    color: #000000;
+    background-color: #ffffff;
     border: none;
     border-radius: 8px;
 }
 
 #start:hover {
-    background-color: #e72727;
+    background-color: #9c37fa;
     color: #ffffff;
 }
 
